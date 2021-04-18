@@ -88,7 +88,7 @@ def plot_satellite_orbit_plotly(
         i=inclination,
         w=argument_of_perigee,
     )
-    t = np.linspace(0, orbital_period, 150)
+    t = np.linspace(0, orbital_period, 200)
     cis_vector = ke.xyzPos(t)
     ascn, descn = ke.xyzNodes_LOSZ()
 
