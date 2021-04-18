@@ -1,26 +1,57 @@
+import plotly.graph_objects as go
 import streamlit as st
 
 st.set_page_config(layout="wide")
-from modules import plot_satellite_orbit_plotly
+from modules import create_globe, plot_satellite_orbit_plotly, set_camera, set_layout
 
-eccentricity = st.sidebar.number_input(
-    "Eccentricity", min_value=0.0, max_value=1.0, value=0.00155, format="%f"
-)
-orbital_period = st.sidebar.number_input(
-    "Orbital period (minutes)", min_value=0.0, value=717.966, format="%f"
-)
-inclination = st.sidebar.number_input(
-    "Inclination (degrees)", min_value=0.0, max_value=180.0, value=56.396, format="%f"
-)
-RAAN = st.sidebar.number_input(
-    "RA ascending node (hours)", min_value=0.0, value=23.263, format="%f"
-)
-argument_of_perigee = st.sidebar.number_input(
-    "Argument of perigee (degrees)", min_value=0.0, value=125.549, format="%f"
-)
 
-fig = plot_satellite_orbit_plotly(
-    eccentricity, orbital_period, inclination, RAAN, argument_of_perigee
-)
+def input_options(i):
+    out_dict = {}
+    out_dict["eccentricity"] = st.sidebar.number_input(
+        f"Eccentricity {i}", min_value=0.0, max_value=1.0, value=0.00155, format="%f"
+    )
+    out_dict["orbital_period"] = st.sidebar.number_input(
+        f"Orbital period (minutes) {i}", min_value=0.0, value=717.966, format="%f"
+    )
+    out_dict["inclination"] = st.sidebar.number_input(
+        f"Inclination (degrees) {i}",
+        min_value=0.0,
+        max_value=180.0,
+        value=56.396,
+        format="%f",
+    )
+    out_dict["RAAN"] = st.sidebar.number_input(
+        f"RA ascending node (hours) {i}", min_value=0.0, value=23.263, format="%f"
+    )
+    out_dict["argument_of_perigee"] = st.sidebar.number_input(
+        f"Argument of perigee (degrees) {i}", min_value=0.0, value=125.549, format="%f"
+    )
+    return out_dict
 
+
+no_orbits = st.sidebar.select_slider(label="No. of orbits", options=[1, 2, 3])
+
+surface = create_globe()
+layout = set_layout()
+camera = set_camera()
+
+coordinate_list = []
+for number in range(no_orbits):
+    coordinate_list.append(input_options(number + 1))
+
+plot_data = [surface]
+for number, coordinate_set in enumerate(coordinate_list):
+    plot_data.extend(
+        plot_satellite_orbit_plotly(
+            coordinate_set["eccentricity"],
+            coordinate_set["orbital_period"],
+            coordinate_set["inclination"],
+            coordinate_set["RAAN"],
+            coordinate_set["argument_of_perigee"],
+            number + 1,
+        )
+    )
+
+fig = go.Figure(data=plot_data, layout=layout)
+fig.update_layout(scene_camera=camera)
 st.plotly_chart(fig, use_container_width=True)
