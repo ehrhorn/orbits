@@ -8,23 +8,43 @@ from modules import create_globe, plot_satellite_orbit_plotly, set_camera, set_l
 def input_options(i):
     out_dict = {}
     out_dict["eccentricity"] = st.sidebar.number_input(
-        f"Eccentricity {i}", min_value=0.0, max_value=1.0, value=0.00155, format="%f"
+        f"Eccentricity {i}",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.00155,
+        step=0.1,
+        format="%f",
     )
     out_dict["orbital_period"] = st.sidebar.number_input(
-        f"Orbital period (minutes) {i}", min_value=0.0, value=717.966, format="%f"
+        f"Orbital period (minutes) {i}",
+        min_value=0.0,
+        value=717.966,
+        step=100.0,
+        format="%f",
     )
     out_dict["inclination"] = st.sidebar.number_input(
         f"Inclination (degrees) {i}",
         min_value=0.0,
         max_value=180.0,
         value=56.396,
+        step=1.0,
         format="%f",
     )
     out_dict["RAAN"] = st.sidebar.number_input(
-        f"RA ascending node (hours) {i}", min_value=0.0, value=23.263, format="%f"
+        f"RA ascending node (hours) {i}",
+        min_value=0.0,
+        max_value=24.0,
+        value=23.263,
+        step=1.0,
+        format="%f",
     )
     out_dict["argument_of_perigee"] = st.sidebar.number_input(
-        f"Argument of perigee (degrees) {i}", min_value=0.0, value=125.549, format="%f"
+        f"Argument of perigee (degrees) {i}",
+        min_value=0.0,
+        max_value=180.0,
+        value=125.549,
+        step=1.0,
+        format="%f",
     )
     return out_dict
 
