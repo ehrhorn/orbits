@@ -29,13 +29,13 @@ def plot_satellite_orbit_plotly(
         zeroline=False,
     )
     titlecolor = "white"
-    bgcolor = "black"
+    bgcolor = "white"
     layout = go.Layout(
         autosize=True,
         width=1200,
         height=800,
         titlefont=dict(family="Courier New", color=titlecolor),
-        showlegend=False,
+        showlegend=True,
         scene=dict(
             xaxis=noaxis,
             yaxis=noaxis,
@@ -76,6 +76,7 @@ def plot_satellite_orbit_plotly(
         y=cis_vector[:, 1],
         z=cis_vector[:, 2],
         mode="lines",
+        name="Orbit",
     )
     surface = go.Surface(
         x=surface["xs"],
@@ -92,18 +93,17 @@ def plot_satellite_orbit_plotly(
         y=[ascn[1]],
         z=[ascn[2]],
         mode="markers",
+        name="Ascending node",
     )
     descending_node = go.Scatter3d(
-        x=[descn[0]],
-        y=[descn[1]],
-        z=[descn[2]],
-        mode="markers",
+        x=[descn[0]], y=[descn[1]], z=[descn[2]], mode="markers", name="Descending node"
     )
     periapsis = go.Scatter3d(
         x=[cis_vector[0, 0]],
         y=[cis_vector[0, 1]],
         z=[cis_vector[0, 2]],
         mode="markers",
+        name="Periapsis",
     )
     plot_data = [surface, orbit, ascending_node, descending_node, periapsis]
     fig = go.Figure(data=plot_data, layout=layout)
