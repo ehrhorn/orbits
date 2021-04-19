@@ -4,6 +4,8 @@ import streamlit as st
 st.set_page_config(layout="wide")
 from modules import create_globe, plot_satellite_orbit_plotly, set_camera, set_layout
 
+st.write("Hej lorte Bjørn!")
+
 
 def input_options(i):
     out_dict = {}
